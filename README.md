@@ -16,3 +16,7 @@
         ├── RegFile
         ├── alu
         └── cpu_usm_v1.sv                     
+        
+## CPU Diagram
+
+![cpu_diagram](https://user-images.githubusercontent.com/64666124/161452445-5e8c5273-fa82-4a24-96d5-aa2dade1a96b.png)
