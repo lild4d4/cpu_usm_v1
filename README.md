@@ -23,4 +23,4 @@
 
 ## Controller Diagram
 
-![Controller_diagram](https://user-images.githubusercontent.com/64666124/161452517-8ede9369-e95c-468f-95da-133906b49e27.png)
+![Controller_diagram](https://user-images.githubusercontent.com/64666124/161452580-a4aa0ed1-49da-42b0-8ed2-9e3edfdd4ece.png)
