@@ -74,7 +74,7 @@ module alu #(parameter C_WIDTH = 8) //ADD=0000, SUB=0001, AND=0010, OR=0011, XOR
 		endcase
 
 		N = Result[C_WIDTH-1]; // el flag N cablea directo al MSB de Result
-		Z = (Result == '0);    // revisa si el resultado es 0
+		Z = (Result == '0');    // revisa si el resultado es 0
 
 		// se usa la concatenacion para agrupar bits independiente en un bus.
 		Status = {N, Z, C, V};
