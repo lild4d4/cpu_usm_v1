@@ -1,9 +1,0 @@
-{
-    "DESIGN_NAME": "cpu_usm_v1",
-    "VERILOG_FILES": "../../cpu_usm_v1.v ../../adder.v ../../alu.v ../../aludecoder.v ../../condlogic.v ../../controller.v ../../extend.v ../../flopr.v ../../maindecoder.v ../../mux2.v ../../mux3.v ../../mux4.v ../../regfile.v ../../sizecontroller.v",
-    "CLOCK_PORT": "clk",
-    "CLOCK_PERIOD": 100.0,
-    "SYNTH_STRATEGY":"DELAY 4",
-    "PL_RESIZER_MAX_SLEW_MARGIN":50,
-    "DESIGN_IS_CORE": true
-}
