@@ -3,21 +3,25 @@ module cpu_usm_v1(
     input wire clk,reset,
     input wire [31:0] instr, data_in,
     //Outputs
-    output wire [31:0] PC, data_out, write_direction,extend_data,
+    output wire [31:0] PC, data_out,
+    output wire [31:0] ALU_result,
     output wire [1:0] MemWrite,
-    output wire [2:0] SizeLoad
+    output wire [2:0] SizeLoad,             //Needed to the load 
+    output wire ResultSrc                   //is like a MemLoad -> 0: No lee, 1: Senal de lectura 
     );
     
     wire [6:0] opcode;
     wire [6:0] funct7;
     wire [2:0] funct3,ImmSrc;
     wire [3:0] Flags,ALUControl;
-    wire RegWrite,ALUSrc,ResultSrc;
+    wire RegWrite,ALUSrc;
     wire [1:0] PCtoRd,PCSrc;
     
     wire [4:0] rs1,rs2,rd;
-    wire [31:0] rd1,rd2_1,rd2_2,data_reg,ALU_result,pctarget_result,next_pc,next_pc_2,ResultSrc_data;
+    wire [31:0] rd1,rd2_1,rd2_2,data_reg,pctarget_result,next_pc,next_pc_2,ResultSrc_data;
     
+    wire [31:0] write_direction,extend_data;
+
     assign opcode = instr[6:0];
     assign funct7 = instr[31:25];
     assign funct3 = instr[14:12];
@@ -36,7 +40,7 @@ module cpu_usm_v1(
     regfile rf(clk,RegWrite,rs1,rs2,rd,data_reg,rd1,rd2_1);
     
     //extend
-    extend extendcontroller(instr,ImmSrc,extend_data);
+    extend extendcontroller(instr[31:7],ImmSrc,extend_data);
     //assign imm32 = {29'b0,ImmSrc};
     
     //ALU

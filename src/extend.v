@@ -1,5 +1,5 @@
 module extend(
-    input wire [31:0] Instr,
+    input wire [31:7] Instr,
     input wire [2:0] ImmSrc,
     output reg [31:0] ExtImm
     );

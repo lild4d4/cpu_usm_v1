@@ -1,0 +1,10 @@
+{
+    "DESIGN_NAME": "cpu_usm_v1",
+    "VERILOG_FILES": "../../src/*.v",
+    "CLOCK_PORT": "clk",
+    "CLOCK_NET": "clk",
+    "GLB_RESIZER_TIMING_OPTIMIZATIONS": true,
+    "FP_CORE_UTIL": 35,
+    "CLOCK_PERIOD": 30.0,
+    "SYNTH_MAX_FANOUT": 5
+}
