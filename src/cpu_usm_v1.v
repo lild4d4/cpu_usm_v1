@@ -38,7 +38,7 @@ module cpu_usm_v1(
     controller con(opcode,funct7,funct3,Flags,RegWrite,ALUSrc,ResultSrc,ALUControl,MemWrite,PCtoRd,PCSrc,SizeLoad,ImmSrc);
         
     //regfile
-    regfile rf(clk,RegWrite,rs1,rs2,rd,data_reg,rd1,rd2_1);
+    regfile rf_rfile(clk,RegWrite,rs1,rs2,rd,data_reg,rd1,rd2_1);
     
     //extend
     extend extendcontroller(instr[31:7],ImmSrc,extend_data);

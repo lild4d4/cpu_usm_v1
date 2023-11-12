@@ -166,7 +166,7 @@ always @(*) begin
             send_start = 1;
             send_data = MemWrite;
             one_byte_tx = 1;
-            if( send_ready ) next_state = SEND_ADDRESS;
+            if( send_ready ) next_state = SEND_DATA;
             else next_state = SEND_MEMWRITE;
         end
         SEND_DATA: begin

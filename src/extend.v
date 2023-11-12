@@ -16,13 +16,13 @@ module extend(
             //3'b010: ExtImm = 32'd3;
             
                             //U-TYPE
-            3'b011: ExtImm = {Instr[31],Instr[30:20],Instr[19:12],{12{~1}}};
+            3'b011: ExtImm = {Instr[31],Instr[30:20],Instr[19:12],{12{~1'b1}}};
             
                             //J-TYPE
             3'b100: ExtImm = {{12{Instr[31]}},Instr[19:12],Instr[20],Instr[30:21],1'b0};
             //3'b100: ExtImm = 32'd3;
                             //I-TYPE_MOD -> for SLLI/SRLI/SRAI
-            3'b101: ExtImm = {{27{~1}}, Instr[24:20]};
+            3'b101: ExtImm = {{27{~1'b1}}, Instr[24:20]};
                             
             default: ExtImm = 32'bx;
         endcase
