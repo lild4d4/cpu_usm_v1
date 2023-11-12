@@ -20,7 +20,8 @@ module cpu_usm_v1(
     wire [4:0] rs1,rs2,rd;
     wire [31:0] rd1,rd2_1,rd2_2,data_reg,pctarget_result,next_pc,next_pc_2,ResultSrc_data;
     
-    wire [31:0] write_direction,extend_data;
+    //wire [31:0] write_direction;
+    wire [31:0] extend_data;
 
     assign opcode = instr[6:0];
     assign funct7 = instr[31:25];
@@ -47,7 +48,7 @@ module cpu_usm_v1(
     mux2 #(32) alumux(rd2_1,extend_data,ALUSrc,rd2_2);
     alu #(32) aluu(rd1,rd2_2,ALUControl,ALU_result,Flags);
     
-    assign write_direction = ALU_result;
+    //assign write_direction = ALU_result;
     
     
 
