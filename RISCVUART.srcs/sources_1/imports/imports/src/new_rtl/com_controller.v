@@ -19,7 +19,10 @@ module com_controller(
     output reg  [31:0] readData,
     input  wire [31:0] address,
     input  wire [1:0]  MemWrite,
-    input  wire [2:0]  SizeLoad
+    input  wire [2:0]  SizeLoad,
+    output wire [3:0]state_com,
+    output wire recv_ready_com,
+    output wire [31:0]recv_data_com
 );
 
 
@@ -181,6 +184,8 @@ always @(*) begin
     endcase
 end
 
-
+assign state_com = state;
+assign recv_ready_com = recv_ready;
+assign recv_data_com = recv_data;
 
 endmodule
