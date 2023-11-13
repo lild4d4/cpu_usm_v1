@@ -32,12 +32,13 @@ module uart_tx
 	output reg tx_ready
 );
 
-	localparam TX_IDLE  = 2'b00;
-	localparam TX_START = 2'b01;
-	localparam TX_SEND  = 2'b10;
-	localparam TX_STOP  = 2'b11;
+	localparam TX_IDLE  = 3'b000;
+	localparam TX_START = 3'b001;
+	localparam TX_SEND  = 3'b010;
+	localparam TX_STOP  = 3'b011;
+	localparam DUMMY  = 3'b100;
 
-	reg [1:0] state = TX_IDLE, state_next;
+	reg [2:0] state = TX_IDLE, state_next;
 	reg [2:0] counter = 3'd0, counter_next;
     reg [7:0] tx_data_reg;
     
@@ -51,10 +52,9 @@ module uart_tx
 	always @(*) begin
 		tx = 1'b1;
 		tx_busy = 1'b1;
-		tx_ready = 1'b0;
 		state_next = state;
 		counter_next = counter;
-
+        tx_ready = 0;
 		case (state)
 		TX_IDLE: begin
 			tx_busy = 1'b0;
@@ -72,9 +72,12 @@ module uart_tx
 				counter_next = counter + 'd1;
 			end
 		end
-		TX_STOP: begin 
-			tx_ready = 1'b1;
-			state_next = (baud_tick) ? TX_IDLE : TX_STOP;
+		TX_STOP: begin
+			state_next = (baud_tick) ? DUMMY : TX_STOP;
+		end
+		DUMMY: begin
+		  tx_ready = 1;
+		  state_next = TX_IDLE;
 		end
 		endcase
 	end

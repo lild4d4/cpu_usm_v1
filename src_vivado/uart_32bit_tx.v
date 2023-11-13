@@ -17,13 +17,13 @@ wire        send_ready;
 wire tx_busy ;
 
 wire baud_tick;
-localparam CLK_FREQUENCY = 10_000_000 ;
+localparam CLK_FREQUENCY = 100_000_000 ;
 localparam BAUD_RATE = 115200 ; 
 
 uart_baud_tick_gen #(
 		.CLK_FREQUENCY(CLK_FREQUENCY),
 		.BAUD_RATE(BAUD_RATE),
-		.OVERSAMPLING(1)
+		.OVERSAMPLING(10)
 	) baud_tick_blk (
 		.clk(clk),
 		.enable(tx_busy),

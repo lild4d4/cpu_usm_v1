@@ -10,7 +10,6 @@ module uart_32bit_rx (
 wire [7:0] recv_data;
 reg       recv_ready;  
 
- 
 
 wire baud8_tick;
 localparam CLK_FREQUENCY = 10_000_000;
@@ -26,10 +25,8 @@ uart_baud_tick_gen #(
 		.tick(baud8_tick)
 	);
 
-reg rx_ready_sync;
 wire rx_ready_pre;
-
-
+reg rx_ready_sync;
 uart_rx uart_rx (
     .clk      ( clk ),
     .reset    ( reset ),
@@ -40,8 +37,8 @@ uart_rx uart_rx (
 );
 
 always @(posedge clk) begin
-		rx_ready_sync <= rx_ready_pre;
-		recv_ready <= ~rx_ready_sync & rx_ready_pre;
+    rx_ready_sync <= rx_ready_pre;
+    recv_ready <= ~rx_ready_sync & rx_ready_pre;
 end
 
 // FSM States
@@ -176,13 +173,12 @@ always @(*) begin
         end
         default: begin
             next_state = IDLE;
-            rst_data = 1;
+            rst_data = 0;
             save = 0;
             save_ctrl = 0;
             data_end = 0;
         end
     endcase
 end
-
 
 endmodule

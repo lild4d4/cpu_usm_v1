@@ -74,7 +74,7 @@ ila_0 ila_com(
     .probe0(rx),   // 1bit 
     .probe1(recv_ready_com), // 1bit 
     .probe2(state_com),   // 4 bit 
-    .probe3(recv_data_com),  // 32 bit
+    .probe3(recv_data_com[7:0]),  // 32 bit
     .probe4(tx)
 ); 
 
