@@ -1,5 +1,5 @@
 module top (
-    input wire clk,reset,
+    input wire clk,reset,//reset2,
     input wire rx,
     output wire tx
 );
@@ -17,21 +17,22 @@ wire [31:0] writeData, readData, address;
 wire [1:0] MemWrite;
 wire [2:0] SizeLoad;
 
-
-clk_wiz_0 inst
-  ( 
-  .clk_out1(clk_div),               
-  .reset(~reset), 
-  .locked('b0),
-  .clk_in1(clk)
-  );
+//wire locked;
+//wire clk_div;
+//clk_wiz_0 inst
+//  ( 
+//  .clk_out1(clk_div),               
+//  .reset(~reset), 
+//  .locked(locked),
+//  .clk_in1(clk)
+//  );
 
 wire [3:0]state_com ;
 wire recv_ready_com;
 wire [31:0]recv_data_com;
 
 com_controller com_controller(
-    .clk(clk_div),
+    .clk(clk),
     .reset(~reset),
     .rx(rx),
     .tx(tx),
@@ -69,14 +70,14 @@ cpu_usm_v1 cpu_usm_v1(
 assign write_enable = |MemWrite;
 assign address = ALU_result;
 
-ila_0 ila_com(
-    .clk(clk),
-    .probe0(rx),   // 1bit 
-    .probe1(recv_ready_com), // 1bit 
-    .probe2(state_com),   // 4 bit 
-    .probe3(recv_data_com[7:0]),  // 32 bit
-    .probe4(tx)
-); 
+//ila_0 ila_com(
+//    .clk(clk),
+//    .probe0(rx),   // 1bit 
+//    .probe1(recv_ready_com), // 1bit 
+//    .probe2(state_com),   // 4 bit 
+//    .probe3(recv_data_com[7:0]),  // 32 bit
+//    .probe4(tx)
+//); 
 
 
 endmodule
