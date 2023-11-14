@@ -39,7 +39,10 @@ localparam  IDLE = 4'b0000,
             WAIT_RECV_DATA = 4'b1000,
             RECV_DATA = 4'b1001,
             SEND_MEMWRITE = 4'b1010,
-            SEND_DATA = 4'b1011;
+            SEND_DATA = 4'b1011,
+            CPU_CLK = 4'b1100,
+            SEND_READY = 4'b1101,
+            SEND_PC_PREV = 4'b1110;
 
 reg [3:0] state;
 reg [3:0] next_state;  
@@ -121,19 +124,33 @@ always @(*) begin
             one_byte_tx = 1;
             if(  recv_ready ) begin  // send_ready &&
                 if( recv_data == 32'd1) next_state = RESET_CPU;
-                else if( recv_data == 32'd2 ) next_state = SEND_PC;
+                else if( recv_data == 32'd2 ) begin
+                    next_state = SEND_PC_PREV;
+                end
                 else next_state = WAIT_INST;
             end
             else next_state = CPU_READY;
         end
+        SEND_READY: begin
+            send_start = 1;
+            send_data = 32'd1;
+            one_byte_rx = 1;
+            one_byte_tx = 1;
+            if(send_ready) next_state = CPU_READY;
+            else next_state = SEND_READY;
+        end
         RESET_CPU: begin
             cpu_reset = 1;
-            next_state = CPU_READY;
+            next_state = SEND_READY;
+        end
+        SEND_PC_PREV: begin
+            send_data = pc;
+            next_state = SEND_PC;
         end
         SEND_PC: begin
             send_start = 1;
             send_data = pc;
-            if( send_ready ) next_state = CPU_READY;
+            if( send_ready ) next_state = SEND_READY;
             else next_state = SEND_PC;
         end
         WAIT_INST: begin
@@ -142,9 +159,15 @@ always @(*) begin
         end
         RUN_CPU: begin
             instr = recv_data;
+//            cpu_run = 1;
+            next_state = CPU_CLK;
+//            if( write_enable || read_enable ) next_state = SEND_ADDRESS;
+//            else next_state = CPU_READY;
+        end
+        CPU_CLK: begin
             cpu_run = 1;
             if( write_enable || read_enable ) next_state = SEND_ADDRESS;
-            else next_state = CPU_READY;
+            else next_state = SEND_READY;
         end
         SEND_ADDRESS: begin
             send_start = 1;
@@ -155,7 +178,7 @@ always @(*) begin
         end
         SEND_SIZELOAD: begin
             send_start = 1;
-            send_data = SizeLoad;
+            send_data = {2'd2,3'd0,SizeLoad};
             one_byte_tx = 1;
             if( send_ready ) next_state = WAIT_RECV_DATA;
             else next_state = SEND_SIZELOAD;
@@ -166,11 +189,11 @@ always @(*) begin
         end
         RECV_DATA: begin
             readData = recv_data;
-            next_state = CPU_READY;
+            next_state = SEND_READY;
         end
         SEND_MEMWRITE: begin
             send_start = 1;
-            send_data = MemWrite;
+            send_data = {2'b1,4'd0,MemWrite};
             one_byte_tx = 1;
             if( send_ready ) next_state = SEND_DATA;
             else next_state = SEND_MEMWRITE;
@@ -178,7 +201,7 @@ always @(*) begin
         SEND_DATA: begin
             send_start = 1;
             send_data = writeData;
-            if( send_ready ) next_state = CPU_READY;
+            if( send_ready ) next_state = SEND_READY;
             else next_state = SEND_DATA;
         end
     endcase
