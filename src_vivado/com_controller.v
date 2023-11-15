@@ -42,7 +42,8 @@ localparam  IDLE = 4'b0000,
             SEND_DATA = 4'b1011,
             CPU_CLK = 4'b1100,
             SEND_READY = 4'b1101,
-            SEND_PC_PREV = 4'b1110;
+            SEND_PC_PREV = 4'b1110,
+            RECV_DATA_CLK = 4'b1111;
 
 reg [3:0] state;
 reg [3:0] next_state;  
@@ -165,9 +166,8 @@ always @(*) begin
 //            else next_state = CPU_READY;
         end
         CPU_CLK: begin
-            cpu_run = 1;
             if( write_enable || read_enable ) next_state = SEND_ADDRESS;
-            else next_state = SEND_READY;
+            else next_state = RECV_DATA_CLK;
         end
         SEND_ADDRESS: begin
             send_start = 1;
@@ -189,9 +189,14 @@ always @(*) begin
         end
         RECV_DATA: begin
             readData = recv_data;
+            next_state = RECV_DATA_CLK;
+        end
+        RECV_DATA_CLK: begin
+            cpu_run = 1;
             next_state = SEND_READY;
         end
         SEND_MEMWRITE: begin
+            cpu_run = 1;
             send_start = 1;
             send_data = {2'b1,4'd0,MemWrite};
             one_byte_tx = 1;
