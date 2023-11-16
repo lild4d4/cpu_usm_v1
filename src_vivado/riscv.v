@@ -1,4 +1,4 @@
-module top (
+module riscv (
     input wire clk,reset,//reset2,
     input wire rx,
     output wire tx
@@ -17,22 +17,22 @@ wire [31:0] writeData, readData, address;
 wire [1:0] MemWrite;
 wire [2:0] SizeLoad;
 
-//wire locked;
-//wire clk_div;
-//clk_wiz_0 inst
-//  ( 
-//  .clk_out1(clk_div),               
-//  .reset(~reset), 
-//  .locked(locked),
-//  .clk_in1(clk)
-//  );
+wire locked;
+wire clk_div;
+clk_wiz_0 inst
+  ( 
+  .clk_out1(clk_div),               
+  .reset(~reset), 
+  .locked(locked),
+  .clk_in1(clk)
+  );
 
 wire [3:0]state_com ;
 wire recv_ready_com;
 wire [31:0]recv_data_com;
 
 com_controller com_controller(
-    .clk(clk),
+    .clk(clk_div),
     .reset(~reset),
     .rx(rx),
     .tx(tx),
@@ -79,5 +79,16 @@ assign address = ALU_result;
 //    .probe4(tx)
 //); 
 
+ila_0 your_instance_name (
+	.clk(clk), // input wire clk
+
+
+	.probe0(rx), // input wire [0:0]  probe0  
+	.probe1(tx), // input wire [0:0]  probe1 
+	.probe2(cpu_run), // input wire [0:0]  probe2 
+	.probe3(state_com), // input wire [3:0]  probe3
+	.probe4(pc[7:0]),
+	.probe5(cpu_reset)
+);
 
 endmodule

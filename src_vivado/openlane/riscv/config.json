@@ -1,0 +1,10 @@
+{
+    "DESIGN_NAME": "riscv",
+    "VERILOG_FILES": "../../*.v",
+    "CLOCK_PORT": "clk",
+    "CLOCK_NET": "clk",
+    "GLB_RESIZER_TIMING_OPTIMIZATIONS": true,
+    "FP_CORE_UTIL": 35,
+    "CLOCK_PERIOD": 50.0,
+    "FP_PIN_ORDER_CFG": "pin_order.cfg"
+}
